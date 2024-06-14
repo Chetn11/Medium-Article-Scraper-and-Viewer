@@ -13,17 +13,26 @@ function HomePage() {
   const [error, setError] = useState(false);
   const [helperText, setHelperText] = useState("");
   const[loader,setLoader]=useState(false);
+  const[data,setData]=useState([])
+  
 
+  console.log(searchTerm);
 
   const fetchData=async ()=>{
     try {
-      setLoader(true);
-      const res=await axios.get("")
-      console.log(res);
+     
+      const res=await axios.get("http://localhost:5000/articles")
+      setData(res.data)
       setLoader(false);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const postData=async ()=>{
+    setLoader(true)
+    await axios.post("http://localhost:5000/scrape",{value:searchTerm});
+    fetchData();
   }
   const handleSearch = () => {
     if (searchTerm.trim() === "") {
@@ -31,9 +40,8 @@ function HomePage() {
       setHelperText("please enter input");
     } else {
       setError(false);
-      fetchData();
       setHelperText("");
-      console.log("Searching for:", searchTerm);
+      postData();
     }
   };
 
@@ -44,6 +52,8 @@ function HomePage() {
       setHelperText("");
     }
   };
+
+  console.log(data)
   return (
     <div style={{backgroundImage:""}}>
       <Box m={4}>
@@ -70,9 +80,12 @@ function HomePage() {
           }}
           sx={{ width: "100%", maxWidth: 400 }}
         />
-        {loader?<Box>
+        {loader?<Box
+         bgcolor="none">
           <img src="loading2.gif" alt="loading"/>
-        </Box>:" "}
+        </Box>:<Box>
+          
+          </Box>}
       </Box>
     </div>
   );

@@ -1,9 +1,10 @@
 body {
   margin: 0;
-  background-image:url(./components/backgroundImage.avif) ;
+  /* background-image:url(./components/backgroundImage.avif) ;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: cover;
+   background-blend-mode: 'overlay';
+  background-size: cover; */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
