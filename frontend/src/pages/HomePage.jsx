@@ -1,12 +1,16 @@
 import {
   Box,
+  Card,
+  CardContent,
   IconButton,
   InputAdornment,
   TextField,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
+import ArticleCard from "../components/ArticleCard";
 
 function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,8 +20,8 @@ function HomePage() {
   const[data,setData]=useState([])
   
 
-  console.log(searchTerm);
-
+  // console.log(searchTerm);
+ console.log(data)
   const fetchData=async ()=>{
     try {
      
@@ -53,7 +57,7 @@ function HomePage() {
     }
   };
 
-  console.log(data)
+  // console.log(data)
   return (
     <div style={{backgroundImage:""}}>
       <Box m={4}>
@@ -83,9 +87,17 @@ function HomePage() {
         {loader?<Box
          bgcolor="none">
           <img src="loading2.gif" alt="loading"/>
-        </Box>:<Box>
-          
-          </Box>}
+        </Box>:""}
+        {loader?"":<Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center">
+        {data?.map((ele,i)=>(
+            <ArticleCard data={ele} key={ele.id}/>
+          ))}
+        </Box>}
+        
       </Box>
     </div>
   );

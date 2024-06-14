@@ -1,9 +1,12 @@
 const express = require('express');
 const scrapData = require('./Scrapper');
+var cors = require('cors');
 
 
 const app = express();
+app.use(cors())
 app.use(express.json());
+
 
 
 let articles=[]; // to store articles
