@@ -6,20 +6,33 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import axios from "axios";
 
 function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(false);
   const [helperText, setHelperText] = useState("");
+  const[loader,setLoader]=useState(false);
 
+
+  const fetchData=async ()=>{
+    try {
+      setLoader(true);
+      const res=await axios.get("")
+      console.log(res);
+      setLoader(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const handleSearch = () => {
     if (searchTerm.trim() === "") {
       setError(true);
       setHelperText("please enter input");
     } else {
       setError(false);
+      fetchData();
       setHelperText("");
-
       console.log("Searching for:", searchTerm);
     }
   };
@@ -57,6 +70,9 @@ function HomePage() {
           }}
           sx={{ width: "100%", maxWidth: 400 }}
         />
+        {loader?<Box>
+          <img src="loading2.gif" alt="loading"/>
+        </Box>:" "}
       </Box>
     </div>
   );
