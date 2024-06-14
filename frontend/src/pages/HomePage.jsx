@@ -45,7 +45,7 @@ function HomePage() {
     }
   };
   return (
-    <div>
+    <div style={{backgroundImage:""}}>
       <Box m={4}>
         <TextField
           variant="outlined"
@@ -63,7 +63,7 @@ function HomePage() {
                   sx={{ p: 1 }}
                   onClick={handleSearch}
                 >
-                  <SearchIcon sx={{ fontSize: 24 }} />
+                  <SearchIcon sx={{ fontSize: 24, color:"blue" }} />
                 </IconButton>
               </InputAdornment>
             ),
