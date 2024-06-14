@@ -1,22 +1,42 @@
-const { default: axios } = require("axios");
-const cheerio=require("cheerio")
+const puppeteer = require('puppeteer');
+const crypto = require('crypto');
 
-async function scrapeMedium() {
-    const url = "https://medium.com/search?q=coding";
-    const result = [];
-    await axios.get(url).then((response) => {
-      const html_data = response.data;
-      // console.log(html_data)
-      const $ = cheerio.load(html_data);
-      $('.l.ae>div:nth-child(2)>.co.bg.cp.cq.cr.cs').each(function(ele,index){
-        console.log($(this).find('h2').text()+" "+"done");
-        return false
-      })
-    ;
-      // console.log($('.l.ae>div:nth-child(2)>.co.bg.cp.cq.cr.cs h2')+" "+"done");
-     
+const scrapData = async (value) => {
+
+  const browser = await puppeteer.launch({headless
+    : true
+  });
+  const page = await browser.newPage();
+
+
+  await page.goto(`https://medium.com/search?q=${value}`);
+
+  
+  await page.waitForSelector('div[role="link"]');
+
+  
+  const data = await page.evaluate(() => {
+   
+    const elements = document.querySelectorAll('div[role="link"]');
+    
+    const articleArray=Array.from(elements).slice(0,5);
+    const results = []
+    articleArray.forEach((element,index) => {
+      const title = element.querySelector('h2').innerText;
+      const description = element.querySelector('h3').innerText;
+      const link = element.getAttribute('data-href');
+      const author = element.querySelector('a[href^="/@"] p').innerText;
+      const id=crypto.randomUUID(); // to generate id
+
+      results.push( {id,title, description, link, author})
     });
-    return result;
-  }
+   
+    return results;
+  });
 
-  module.exports={scrapeMedium};
+  await browser.close();
+
+  return data;  
+}
+
+module.exports = scrapData

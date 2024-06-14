@@ -1,20 +1,28 @@
 const express = require('express');
-const{scrapeMedium}=require("./Scrapper")
+const scrapData = require('./Scrapper');
+
 
 const app = express();
 app.use(express.json());
 
-app.get("/articles", async (req, res) => {
-  try {
-    const data = await scrapeMedium();
-    return res.status(200).json({
-      result: data,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      err: err.toString(),
-    });
+
+let articles=[]; // to store articles
+app.post('/scrape', async (req, res) => {
+  const { value } = req.body;
+  if (!value) {
+      return res.status(400).json({ error: 'Input is required' });
   }
+
+  try {
+      articles = await scrapData(value);
+      res.status(200).json(articles);
+  } catch (error) {
+      res.status(500).json({ error: 'Error while getting articles' });
+  }
+});
+
+app.get("/articles", async (req, res) => {
+  res.status(200).json(articles);
 });
 
 const PORT = process.env.PORT || 5000;
